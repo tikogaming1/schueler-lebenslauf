@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Rainbow Line](https://i.imgur.com/9b7Qwp5.gif)
+🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈
 
 ### 🌟 **Erstelle deinen perfekten Lebenslauf in Minuten!** 🌟
 
@@ -13,7 +13,7 @@
 
 🎯 [Live Demo](https://tikogaming1.github.io/schueler-lebenslauf/) • 📄 [Repository](https://github.com/tikogaming1/schueler-lebenslauf) • ⭐ Star mich!
 
-![Rainbow Line](https://i.imgur.com/9b7Qwp5.gif)
+🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈
 
 </div>
 
@@ -27,7 +27,7 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 
 <div align="center">
 
-![Typing Cat](https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif)
+### 🐱 💻 ✨
 
 </div>
 
@@ -56,7 +56,7 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 
 <div align="center">
 
-![Success](https://media.giphy.com/media/111ebonMs90YLu/giphy.gif)
+### 🎉 ✨ 🎊
 
 </div>
 
@@ -98,7 +98,7 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 
 <div align="center">
 
-![Students](https://media.giphy.com/media/l0HlHFRbD8GqX0pZS/giphy.gif)
+### 🎓 👨‍🎓 👩‍🎓
 
 </div>
 
@@ -121,7 +121,7 @@ Klicke auf **"📄 Beispiel laden"** in der App und sieh dir ein vollständiges 
 
 <div align="center">
 
-![Example](https://media.giphy.com/media/3oKIPEqDGU1pdx8OaA/giphy.gif)
+### 💡 ✨ 📝
 
 </div>
 
@@ -135,7 +135,7 @@ Klicke auf **"📄 Beispiel laden"** in der App und sieh dir ein vollständiges 
 
 <div align="center">
 
-![Rainbow Line](https://i.imgur.com/9b7Qwp5.gif)
+🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈
 
 ### 💚 **Viel Erfolg bei deiner Bewerbung!** 💚
 
@@ -143,7 +143,7 @@ Klicke auf **"📄 Beispiel laden"** in der App und sieh dir ein vollständiges 
 
 ⭐ Wenn dir das Tool gefällt, gib uns einen Star! ⭐
 
-![Rainbow Line](https://i.imgur.com/9b7Qwp5.gif)
+🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈
 
 </div>
 
@@ -161,6 +161,6 @@ Bei Fragen oder Verbesserungsvorschlägen:
 
 **🎓 Happy Job Hunting! 🎓**
 
-![Bye](https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif)
+### 👋 ✨ 🚀
 
 </div>
