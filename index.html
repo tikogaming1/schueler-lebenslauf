@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lebenslauf Generator für Schüler</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 20px;
+        }
+
+        .input-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .panel-header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .panel-header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .panel-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s;
+            min-width: 80px;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .tab.active {
+            background: white;
+            color: #11998e;
+            border-bottom: 3px solid #11998e;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+            font-size: 0.9rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #11998e;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .entry-list {
+            margin-top: 15px;
+        }
+
+        .entry-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #11998e;
+        }
+
+        .entry-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .entry-item-title {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .entry-item-subtitle {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .preview-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+            min-height: 800px;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #11998e;
+        }
+
+        .preview-title {
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cv-container {
+            font-family: 'Georgia', serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .cv-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2c3e50;
+        }
+
+        .cv-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cv-contact {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .cv-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cv-section {
+            margin-bottom: 25px;
+        }
+
+        .cv-section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #11998e;
+        }
+
+        .cv-entry {
+            margin-bottom: 20px;
+        }
+
+        .cv-entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .cv-entry-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+
+        .cv-entry-date {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .cv-entry-subtitle {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .cv-entry-description {
+            color: #444;
+            text-align: justify;
+        }
+
+        .cv-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cv-skill {
+            background: #e8f5f3;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid #11998e;
+        }
+
+        .add-entry-form {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #6c757d;
+            padding: 40px;
+            font-style: italic;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .input-panel {
+                display: none;
+            }
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .preview-panel {
+                box-shadow: none;
+                padding: 20px;
+            }
+            .preview-header {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .input-panel {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="input-panel">
+            <div class="panel-header">
+                <h1>🎓 Schüler Lebenslauf</h1>
+                <p>Für Ausbildung, Praktikum & FSJ</p>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('personal')">👤 Ich</button>
+                <button class="tab" onclick="showTab('school')">🏫 Schule</button>
+                <button class="tab" onclick="showTab('internship')">💼 Praktika</button>
+                <button class="tab" onclick="showTab('engagement')">⭐ Engagement</button>
+                <button class="tab" onclick="showTab('skills')">🎯 Fähigkeiten</button>
+            </div>
+
+            <!-- Persönliche Informationen -->
+            <div id="personal" class="tab-content active">
+                <div class="form-group">
+                    <label>Vorname *</label>
+                    <input type="text" id="firstName" placeholder="Max" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Nachname *</label>
+                    <input type="text" id="lastName" placeholder="Mustermann" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Geburtsdatum & -ort</label>
+                    <input type="text" id="birthInfo" placeholder="z.B. 15.03.2006 in Berlin" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>E-Mail *</label>
+                    <input type="email" id="email" placeholder="max.mustermann@email.de" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Telefon</label>
+                    <input type="tel" id="phone" placeholder="+49 123 456789" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Adresse *</label>
+                    <input type="text" id="address" placeholder="Musterstraße 1, 12345 Musterstadt" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Über mich (kurzer Text über dich)</label>
+                    <textarea id="aboutMe" placeholder="Ich bin ein engagierter Schüler, der gerne..." onchange="updatePreview()"></textarea>
+                </div>
+            </div>
+
+            <!-- Schulbildung -->
+            <div id="school" class="tab-content">
+                <div class="add-entry-form">
+                    <div class="form-group">
+                        <label>Schulname</label>
+                        <input type="text" id="schoolName" placeholder="z.B. Gymnasium Musterstadt">
+                    </div>
+                    <div class="form-group">
+                        <label>Schulart / Abschluss</label>
+                        <select id="schoolType">
+                            <option value="Grundschule">Grundschule</option>
+                            <option value="Hauptschule">Hauptschule</option>
+                            <option value="Realschule">Realschule</option>
+                            <option value="Gymnasium">Gymnasium</option>
+                            <option value="Gesamtschule">Gesamtschule</option>
+                            <option value="Hauptschulabschluss">Hauptschulabschluss</option>
+                            <option value="Realschulabschluss (Mittlere Reife)">Realschulabschluss</option>
+                            <option value="Fachhochschulreife">Fachhochschulreife</option>
+                            <option value="Abitur (Allgemeine Hochschulreife)">Abitur</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Von (Jahr)</label>
+                            <input type="text" id="schoolFrom" placeholder="2015">
+                        </div>
+                        <div class="form-group">
+                            <label>Bis (Jahr)</label>
+                            <input type="text" id="schoolTo" placeholder="2024 oder 'heute'">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Besonderes (Schwerpunkt, Notendurchschnitt, etc.)</label>
+                        <textarea id="schoolDetails" placeholder="z.B. Schwerpunkt Naturwissenschaften, Notendurchschnitt 2.3..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="addSchool()">➕ Schule hinzufügen</button>
+                </div>
+                <div id="schoolList" class="entry-list"></div>
+            </div>
+
+            <!-- Praktika -->
+            <div id="internship" class="tab-content">
+                <div class="add-entry-form">
+                    <div class="form-group">
+                        <label>Betrieb/Firma</label>
+                        <input type="text" id="intCompany" placeholder="z.B. Musterfirma GmbH">
+                    </div>
+                    <div class="form-group">
+                        <label>Bereich / Tätigkeit</label>
+                        <input type="text" id="intPosition" placeholder="z.B. Betriebspraktikum im Verkauf">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Von</label>
+                            <input type="text" id="intFrom" placeholder="MM/YYYY">
+                        </div>
+                        <div class="form-group">
+                            <label>Bis</label>
+                            <input type="text" id="intTo" placeholder="MM/YYYY">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Aufgaben & Erlebnisse</label>
+                        <textarea id="intDescription" placeholder="Was hast du gemacht? Was hast du gelernt?"></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="addInternship()">➕ Praktikum hinzufügen</button>
+                </div>
+                <div id="internshipList" class="entry-list"></div>
+            </div>
+
+            <!-- Hobbys & Engagement -->
+            <div id="engagement" class="tab-content">
+                <div class="add-entry-form">
+                    <div class="form-group">
+                        <label>Was machst du?</label>
+                        <input type="text" id="engActivity" placeholder="z.B. Fußball, Schülervertretung, Ehrenamt...">
+                    </div>
+                    <div class="form-group">
+                        <label>Wo? (Verein, Schule, etc.)</label>
+                        <input type="text" id="engOrg" placeholder="z.B. SV Musterstadt, Schülervertretung...">
+                    </div>
+                    <div class="form-group">
+                        <label>Seit wann?</label>
+                        <input type="text" id="engSince" placeholder="z.B. 2019">
+                    </div>
+                    <div class="form-group">
+                        <label>Beschreibung</label>
+                        <textarea id="engDesc" placeholder="Was machst du dort? Welche Verantwortung hast du?"></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="addEngagement()">➕ Aktivität hinzufügen</button>
+                </div>
+                <div id="engagementList" class="entry-list"></div>
+            </div>
+
+            <!-- Fähigkeiten -->
+            <div id="skills" class="tab-content">
+                <div class="add-entry-form">
+                    <div class="form-group">
+                        <label>Computerkentnisse</label>
+                        <input type="text" id="skillIT" placeholder="z.B. Word, Excel, PowerPoint, Programmieren..." onchange="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Fremdsprachen</label>
+                        <input type="text" id="skillLang" placeholder="z.B. Englisch (gut), Französisch (Grundkenntnisse)..." onchange="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Stärken & Fähigkeiten</label>
+                        <input type="text" id="skillStrength" placeholder="z.B. Teamfähig, kommunikativ, organisiert..." onchange="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Führerschein (falls vorhanden)</label>
+                        <input type="text" id="skillLicense" placeholder="z.B. Klasse B (erworben 2024)" onchange="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Interessen & Hobbys (kurz)</label>
+                        <input type="text" id="skillHobbies" placeholder="z.B. Sport, Musik lesen, Fotografie..." onchange="updatePreview()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-panel">
+            <div class="preview-header">
+                <h2 class="preview-title">📋 Dein Lebenslauf</h2>
+                <div class="preview-actions">
+                    <button class="btn btn-success" onclick="window.print()">🖨️ Drucken/PDF</button>
+                    <button class="btn btn-secondary" onclick="loadExample()">📄 Beispiel laden</button>
+                    <button class="btn btn-danger" onclick="clearAll()">🗑️ Alles löschen</button>
+                </div>
+            </div>
+            
+            <div id="cvPreview" class="cv-container">
+                <div class="empty-state">
+                    <h3>Willkommen! 🎓</h3>
+                    <p>Fülle die Felder auf der linken Seite aus, um deinen Lebenslauf zu erstellen.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cvData = {
+            personal: {},
+            school: [],
+            internship: [],
+            engagement: [],
+            skills: {}
+        };
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function updatePreview() {
+            cvData.personal = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                birthInfo: document.getElementById('birthInfo').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                aboutMe: document.getElementById('aboutMe').value
+            };
+            cvData.skills = {
+                it: document.getElementById('skillIT').value,
+                languages: document.getElementById('skillLang').value,
+                strengths: document.getElementById('skillStrength').value,
+                license: document.getElementById('skillLicense').value,
+                hobbies: document.getElementById('skillHobbies').value
+            };
+            renderCV();
+        }
+
+        function addSchool() {
+            const entry = {
+                name: document.getElementById('schoolName').value,
+                type: document.getElementById('schoolType').value,
+                from: document.getElementById('schoolFrom').value,
+                to: document.getElementById('schoolTo').value,
+                details: document.getElementById('schoolDetails').value
+            };
+            if (entry.name) {
+                cvData.school.push(entry);
+                document.getElementById('schoolName').value = '';
+                document.getElementById('schoolFrom').value = '';
+                document.getElementById('schoolTo').value = '';
+                document.getElementById('schoolDetails').value = '';
+                renderSchoolList();
+                renderCV();
+            }
+        }
+
+        function addInternship() {
+            const entry = {
+                company: document.getElementById('intCompany').value,
+                position: document.getElementById('intPosition').value,
+                from: document.getElementById('intFrom').value,
+                to: document.getElementById('intTo').value,
+                description: document.getElementById('intDescription').value
+            };
+            if (entry.company) {
+                cvData.internship.push(entry);
+                document.getElementById('intCompany').value = '';
+                document.getElementById('intPosition').value = '';
+                document.getElementById('intFrom').value = '';
+                document.getElementById('intTo').value = '';
+                document.getElementById('intDescription').value = '';
+                renderInternshipList();
+                renderCV();
+            }
+        }
+
+        function addEngagement() {
+            const entry = {
+                activity: document.getElementById('engActivity').value,
+                org: document.getElementById('engOrg').value,
+                since: document.getElementById('engSince').value,
+                desc: document.getElementById('engDesc').value
+            };
+            if (entry.activity) {
+                cvData.engagement.push(entry);
+                document.getElementById('engActivity').value = '';
+                document.getElementById('engOrg').value = '';
+                document.getElementById('engSince').value = '';
+                document.getElementById('engDesc').value = '';
+                renderEngagementList();
+                renderCV();
+            }
+        }
+
+        function renderSchoolList() {
+            const container = document.getElementById('schoolList');
+            container.innerHTML = cvData.school.map((school, index) => `
+                <div class="entry-item">
+                    <div class="entry-item-header">
+                        <span class="entry-item-title">${school.name}</span>
+                        <button class="btn btn-danger" onclick="removeSchool(${index})">🗑️</button>
+                    </div>
+                    <div class="entry-item-subtitle">${school.type} | ${school.from} - ${school.to}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderInternshipList() {
+            const container = document.getElementById('internshipList');
+            container.innerHTML = cvData.internship.map((int, index) => `
+                <div class="entry-item">
+                    <div class="entry-item-header">
+                        <span class="entry-item-title">${int.company}</span>
+                        <button class="btn btn-danger" onclick="removeInternship(${index})">🗑️</button>
+                    </div>
+                    <div class="entry-item-subtitle">${int.position} | ${int.from} - ${int.to}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderEngagementList() {
+            const container = document.getElementById('engagementList');
+            container.innerHTML = cvData.engagement.map((eng, index) => `
+                <div class="entry-item">
+                    <div class="entry-item-header">
+                        <span class="entry-item-title">${eng.activity}</span>
+                        <button class="btn btn-danger" onclick="removeEngagement(${index})">🗑️</button>
+                    </div>
+                    <div class="entry-item-subtitle">${eng.org} | Seit ${eng.since}</div>
+                </div>
+            `).join('');
+        }
+
+        function removeSchool(index) {
+            cvData.school.splice(index, 1);
+            renderSchoolList();
+            renderCV();
+        }
+
+        function removeInternship(index) {
+            cvData.internship.splice(index, 1);
+            renderInternshipList();
+            renderCV();
+        }
+
+        function removeEngagement(index) {
+            cvData.engagement.splice(index, 1);
+            renderEngagementList();
+            renderCV();
+        }
+
+        function renderCV() {
+            const p = cvData.personal;
+            const s = cvData.skills;
+            const hasData = p.firstName || p.lastName || cvData.school.length > 0 || 
+                          cvData.internship.length > 0 || cvData.engagement.length > 0;
+            
+            if (!hasData) {
+                document.getElementById('cvPreview').innerHTML = `
+                    <div class="empty-state">
+                        <h3>Willkommen! 🎓</h3>
+                        <p>Fülle die Felder auf der linken Seite aus, um deinen Lebenslauf zu erstellen.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+
+            if (p.firstName || p.lastName) {
+                html += `
+                    <div class="cv-header">
+                        <div class="cv-name">${p.firstName || ''} ${p.lastName || ''}</div>
+                        ${p.birthInfo ? `<div style="font-size: 1rem; color: #666; margin-bottom: 15px;">geb. ${p.birthInfo}</div>` : ''}
+                        <div class="cv-contact">
+                            ${p.address ? `<div class="cv-contact-item">📍 ${p.address}</div>` : ''}
+                            ${p.email ? `<div class="cv-contact-item">📧 ${p.email}</div>` : ''}
+                            ${p.phone ? `<div class="cv-contact-item">📞 ${p.phone}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (p.aboutMe) {
+                html += `
+                    <div class="cv-section">
+                        <div class="cv-section-title">Über mich</div>
+                        <div class="cv-entry-description">${p.aboutMe}</div>
+                    </div>
+                `;
+            }
+
+            if (cvData.school.length > 0) {
+                html += `
+                    <div class="cv-section">
+                        <div class="cv-section-title">Schulbildung</div>
+                        ${cvData.school.map(school => `
+                            <div class="cv-entry">
+                                <div class="cv-entry-header">
+                                    <div class="cv-entry-title">${school.name}</div>
+                                    <div class="cv-entry-date">${school.from} - ${school.to}</div>
+                                </div>
+                                <div class="cv-entry-subtitle">${school.type}</div>
+                                ${school.details ? `<div class="cv-entry-description">${school.details}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            if (cvData.internship.length > 0) {
+                html += `
+                    <div class="cv-section">
+                        <div class="cv-section-title">Praktika & Berufserfahrung</div>
+                        ${cvData.internship.map(int => `
+                            <div class="cv-entry">
+                                <div class="cv-entry-header">
+                                    <div class="cv-entry-title">${int.company}</div>
+                                    <div class="cv-entry-date">${int.from} - ${int.to}</div>
+                                </div>
+                                <div class="cv-entry-subtitle">${int.position}</div>
+                                ${int.description ? `<div class="cv-entry-description">${int.description}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            if (cvData.engagement.length > 0) {
+                html += `
+                    <div class="cv-section">
+                        <div class="cv-section-title">Engagement & Aktivitäten</div>
+                        ${cvData.engagement.map(eng => `
+                            <div class="cv-entry">
+                                <div class="cv-entry-header">
+                                    <div class="cv-entry-title">${eng.activity}</div>
+                                    <div class="cv-entry-date">Seit ${eng.since}</div>
+                                </div>
+                                <div class="cv-entry-subtitle">${eng.org}</div>
+                                ${eng.desc ? `<div class="cv-entry-description">${eng.desc}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            const hasSkills = s.it || s.languages || s.strengths || s.license || s.hobbies;
+            if (hasSkills) {
+                html += `
+                    <div class="cv-section">
+                        <div class="cv-section-title">Kenntnisse & Interessen</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            ${s.it ? `<div><strong>Computer:</strong><br>${s.it}</div>` : ''}
+                            ${s.languages ? `<div><strong>Sprachen:</strong><br>${s.languages}</div>` : ''}
+                            ${s.strengths ? `<div><strong>Stärken:</strong><br>${s.strengths}</div>` : ''}
+                            ${s.license ? `<div><strong>Führerschein:</strong><br>${s.license}</div>` : ''}
+                        </div>
+                        ${s.hobbies ? `<div style="margin-top: 15px;"><strong>Hobbys & Interessen:</strong> ${s.hobbies}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            html += `
+                <div style="margin-top: 40px; text-align: right; color: #666;">
+                    ${p.address ? p.address.split(',').pop().trim() : 'Musterstadt'}, den ${new Date().toLocaleDateString('de-DE')}
+                </div>
+            `;
+
+            document.getElementById('cvPreview').innerHTML = html;
+        }
+
+        function clearAll() {
+            if (confirm('Möchtest du wirklich alle Daten löschen?')) {
+                cvData = {
+                    personal: {},
+                    school: [],
+                    internship: [],
+                    engagement: [],
+                    skills: {}
+                };
+                document.querySelectorAll('input, textarea').forEach(input => input.value = '');
+                renderSchoolList();
+                renderInternshipList();
+                renderEngagementList();
+                renderCV();
+            }
+        }
+
+        function loadExample() {
+            cvData = {
+                personal: {
+                    firstName: 'Lisa',
+                    lastName: 'Müller',
+                    birthInfo: '12.05.2007 in Hamburg',
+                    email: 'lisa.mueller@email.de',
+                    phone: '+49 170 1234567',
+                    address: 'Bergedorfer Straße 15, 21033 Hamburg',
+                    aboutMe: 'Ich bin eine motivierte Schülerin der 10. Klasse mit Interesse an Naturwissenschaften. In meiner Freizeit engagiere ich mich in der Schülervertretung und spiele aktiv Handball. Ich suche einen Ausbildungsplatz als Laborassistentin.'
+                },
+                school: [
+                    {
+                        name: 'Gymnasium Eimsbüttel',
+                        type: 'Gymnasium (10. Klasse)',
+                        from: '2017',
+                        to: 'heute',
+                        details: 'Schwerpunkt: Biologie und Chemie, Notendurchschnitt: 2.1'
+                    },
+                    {
+                        name: 'Grundschule am See',
+                        type: 'Grundschule',
+                        from: '2013',
+                        to: '2017',
+                        details: ''
+                    }
+                ],
+                internship: [
+                    {
+                        company: 'Pharma GmbH Hamburg',
+                        position: 'Betriebspraktikum Labor',
+                        from: '02/2024',
+                        to: '02/2024',
+                        description: '2-wöchiges Praktikum im chemischen Labor. Unterstützung bei Analysen und Dokumentation.'
+                    },
+                    {
+                        company: 'Bäckerei Schmidt',
+                        position: 'Praktikum Verkauf',
+                        from: '08/2023',
+                        to: '08/2023',
+                        description: '1-wöchiges Praktikum im Verkauf. Kundenberatung und Kasse.'
+                    }
+                ],
+                engagement: [
+                    {
+                        activity: 'Schülervertretung',
+                        org: 'Gymnasium Eimsbüttel',
+                        since: '2022',
+                        desc: 'Kassenwartin der SV. Organisation von Schulevents und Verwaltung der Budgets.'
+                    },
+                    {
+                        activity: 'Handball',
+                        org: 'TSV Hamburg',
+                        since: '2015',
+                        desc: 'Spielerin in der B-Jugend Mannschaft. Training 3x pro Woche.'
+                    },
+                    {
+                        activity: 'Ehrenamt',
+                        org: 'Tafel Hamburg',
+                        since: '2023',
+                        desc: 'Helferin bei der Lebensmittelausgabe jeden Samstagmorgen.'
+                    }
+                ],
+                skills: {
+                    it: 'Microsoft Office (Word, Excel, PowerPoint), Grundlagen Python',
+                    languages: 'Deutsch (Muttersprache), Englisch (gut), Französisch (Grundkenntnisse)',
+                    strengths: 'Teamfähig, zuverlässig, organisiert, lernbereit',
+                    license: '',
+                    hobbies: 'Handball, Fotografie, Lesen, Natur'
+                }
+            };
+
+            document.getElementById('firstName').value = cvData.personal.firstName;
+            document.getElementById('lastName').value = cvData.personal.lastName;
+            document.getElementById('birthInfo').value = cvData.personal.birthInfo;
+            document.getElementById('email').value = cvData.personal.email;
+            document.getElementById('phone').value = cvData.personal.phone;
+            document.getElementById('address').value = cvData.personal.address;
+            document.getElementById('aboutMe').value = cvData.personal.aboutMe;
+            document.getElementById('skillIT').value = cvData.skills.it;
+            document.getElementById('skillLang').value = cvData.skills.languages;
+            document.getElementById('skillStrength').value = cvData.skills.strengths;
+            document.getElementById('skillLicense').value = cvData.skills.license;
+            document.getElementById('skillHobbies').value = cvData.skills.hobbies;
+
+            renderSchoolList();
+            renderInternshipList();
+            renderEngagementList();
+            renderCV();
+        }
+    </script>
+</body>
+</html>
