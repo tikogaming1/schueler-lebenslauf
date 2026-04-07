@@ -6,10 +6,7 @@
 
 ### 🌟 **Erstelle deinen perfekten Lebenslauf in Minuten!** 🌟
 
-![Version](https://img.shields.io/badge/Version-1.0-brightgreen?style=for-the-badge&logo=github)
-![Made with Love](https://img.shields.io/badge/Made%20with-❤️-ff69b4?style=for-the-badge)
-![HTML5](https://img.shields.io/badge/HTML5-🌐-orange?style=for-the-badge&logo=html5)
-![CSS3](https://img.shields.io/badge/CSS3-🎨-blue?style=for-the-badge&logo=css3)
+🔖 **Version 1.0** | 💚 **Made with Love** | 🌐 **HTML5** | � **CSS3**
 
 🎯 [Live Demo](https://tikogaming1.github.io/schueler-lebenslauf/) • 📄 [Repository](https://github.com/tikogaming1/schueler-lebenslauf) • ⭐ Star mich!
 
@@ -78,7 +75,7 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 
 ## 🌟 **Warum dieses Tool?**
 
-- ✅ **Kostenlos** - Immer und für immer! 🆓
+- ✅ **Kostenlos** - Und für immer Verfühgbar! 🆓
 - ✅ **Ohne Anmeldung** - Kein Account nötig! 🔓
 - ✅ **Offline nutzbar** - Funktioniert ohne Internet! 📴
 - ✅ **Mobilfreundlich** - Auch auf dem Handy! 📱
