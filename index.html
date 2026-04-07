@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lebenslauf Generator für Schüler</title>
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -554,6 +556,7 @@
             <div class="preview-header">
                 <h2 class="preview-title">📋 Dein Lebenslauf</h2>
                 <div class="preview-actions">
+                    <button class="btn btn-success" onclick="exportToWord()">📄 Word speichern</button>
                     <button class="btn btn-success" onclick="window.print()">🖨️ Drucken/PDF</button>
                     <button class="btn btn-secondary" onclick="loadExample()">📄 Beispiel laden</button>
                     <button class="btn btn-danger" onclick="clearAll()">🗑️ Alles löschen</button>
@@ -839,21 +842,242 @@
             document.getElementById('cvPreview').innerHTML = html;
         }
 
-        function clearAll() {
-            if (confirm('Möchtest du wirklich alle Daten löschen?')) {
-                cvData = {
-                    personal: {},
-                    school: [],
-                    internship: [],
-                    engagement: [],
-                    skills: {}
-                };
-                document.querySelectorAll('input, textarea').forEach(input => input.value = '');
-                renderSchoolList();
-                renderInternshipList();
-                renderEngagementList();
-                renderCV();
+        function exportToWord() {
+            const p = cvData.personal;
+            const s = cvData.skills;
+            
+            if (!p.firstName && !p.lastName && cvData.school.length === 0) {
+                alert('Bitte fülle zuerst deine Daten aus!');
+                return;
             }
+
+            const doc = new docx.Document({
+                sections: [{
+                    properties: {},
+                    children: [
+                        new docx.Paragraph({
+                            text: `${p.firstName || ''} ${p.lastName || ''}`.toUpperCase(),
+                            heading: docx.HeadingLevel.TITLE,
+                            alignment: docx.Alignment.CENTER,
+                            spacing: { after: 200 }
+                        }),
+                        p.birthInfo ? new docx.Paragraph({
+                            text: `geb. ${p.birthInfo}`,
+                            alignment: docx.Alignment.CENTER,
+                            spacing: { after: 200 }
+                        }) : new docx.Paragraph({ text: '' }),
+                        
+                        new docx.Paragraph({
+                            children: [
+                                p.address ? new docx.TextRun({ text: p.address + ' | ' }) : new docx.TextRun(''),
+                                p.email ? new docx.TextRun({ text: p.email }) : new docx.TextRun(''),
+                                p.phone ? new docx.TextRun({ text: ' | ' + p.phone }) : new docx.TextRun('')
+                            ],
+                            alignment: docx.Alignment.CENTER,
+                            spacing: { after: 400 }
+                        }),
+                        
+                        new docx.Paragraph({
+                            text: '',
+                            border: {
+                                bottom: {
+                                    color: "2c3e50",
+                                    space: 1,
+                                    value: "single",
+                                    size: 12
+                                }
+                            },
+                            spacing: { after: 400 }
+                        }),
+
+                        ...(p.aboutMe ? [
+                            new docx.Paragraph({
+                                text: 'Über mich',
+                                heading: docx.HeadingLevel.HEADING_1,
+                                border: {
+                                    bottom: {
+                                        color: "11998e",
+                                        space: 1,
+                                        value: "single",
+                                        size: 6
+                                    }
+                                },
+                                spacing: { after: 200 }
+                            }),
+                            new docx.Paragraph({
+                                text: p.aboutMe,
+                                spacing: { after: 300 }
+                            })
+                        ] : []),
+
+                        ...(cvData.school.length > 0 ? [
+                            new docx.Paragraph({
+                                text: 'Schulbildung',
+                                heading: docx.HeadingLevel.HEADING_1,
+                                border: {
+                                    bottom: {
+                                        color: "11998e",
+                                        space: 1,
+                                        value: "single",
+                                        size: 6
+                                    }
+                                },
+                                spacing: { after: 200 }
+                            }),
+                            ...cvData.school.flatMap(school => [
+                                new docx.Paragraph({
+                                    children: [
+                                        new docx.TextRun({ text: school.name, bold: true }),
+                                        new docx.TextRun({ text: `\t${school.from} - ${school.to}`, italics: true })
+                                    ],
+                                    tabStops: [{ type: docx.TabStopType.RIGHT, position: 9000 }],
+                                    spacing: { after: 100 }
+                                }),
+                                new docx.Paragraph({
+                                    text: school.type,
+                                    spacing: { after: 100 }
+                                }),
+                                ...(school.details ? [new docx.Paragraph({
+                                    text: school.details,
+                                    spacing: { after: 200 }
+                                })] : [new docx.Paragraph({ text: '', spacing: { after: 200 } })])
+                            ])
+                        ] : []),
+
+                        ...(cvData.internship.length > 0 ? [
+                            new docx.Paragraph({
+                                text: 'Praktika & Berufserfahrung',
+                                heading: docx.HeadingLevel.HEADING_1,
+                                border: {
+                                    bottom: {
+                                        color: "11998e",
+                                        space: 1,
+                                        value: "single",
+                                        size: 6
+                                    }
+                                },
+                                spacing: { after: 200 }
+                            }),
+                            ...cvData.internship.flatMap(int => [
+                                new docx.Paragraph({
+                                    children: [
+                                        new docx.TextRun({ text: int.company, bold: true }),
+                                        new docx.TextRun({ text: `\t${int.from} - ${int.to}`, italics: true })
+                                    ],
+                                    tabStops: [{ type: docx.TabStopType.RIGHT, position: 9000 }],
+                                    spacing: { after: 100 }
+                                }),
+                                new docx.Paragraph({
+                                    text: int.position,
+                                    spacing: { after: 100 }
+                                }),
+                                ...(int.description ? [new docx.Paragraph({
+                                    text: int.description,
+                                    spacing: { after: 200 }
+                                })] : [new docx.Paragraph({ text: '', spacing: { after: 200 } })])
+                            ])
+                        ] : []),
+
+                        ...(cvData.engagement.length > 0 ? [
+                            new docx.Paragraph({
+                                text: 'Engagement & Aktivitäten',
+                                heading: docx.HeadingLevel.HEADING_1,
+                                border: {
+                                    bottom: {
+                                        color: "11998e",
+                                        space: 1,
+                                        value: "single",
+                                        size: 6
+                                    }
+                                },
+                                spacing: { after: 200 }
+                            }),
+                            ...cvData.engagement.flatMap(eng => [
+                                new docx.Paragraph({
+                                    children: [
+                                        new docx.TextRun({ text: eng.activity, bold: true }),
+                                        new docx.TextRun({ text: `\tSeit ${eng.since}`, italics: true })
+                                    ],
+                                    tabStops: [{ type: docx.TabStopType.RIGHT, position: 9000 }],
+                                    spacing: { after: 100 }
+                                }),
+                                new docx.Paragraph({
+                                    text: eng.org,
+                                    spacing: { after: 100 }
+                                }),
+                                ...(eng.desc ? [new docx.Paragraph({
+                                    text: eng.desc,
+                                    spacing: { after: 200 }
+                                })] : [new docx.Paragraph({ text: '', spacing: { after: 200 } })])
+                            ])
+                        ] : []),
+
+                        ...((s.it || s.languages || s.strengths || s.license || s.hobbies) ? [
+                            new docx.Paragraph({
+                                text: 'Kenntnisse & Interessen',
+                                heading: docx.HeadingLevel.HEADING_1,
+                                border: {
+                                    bottom: {
+                                        color: "11998e",
+                                        space: 1,
+                                        value: "single",
+                                        size: 6
+                                    }
+                                },
+                                spacing: { after: 200 }
+                            }),
+                            ...(s.it ? [new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({ text: 'Computer: ', bold: true }),
+                                    new docx.TextRun({ text: s.it })
+                                ],
+                                spacing: { after: 100 }
+                            })] : []),
+                            ...(s.languages ? [new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({ text: 'Sprachen: ', bold: true }),
+                                    new docx.TextRun({ text: s.languages })
+                                ],
+                                spacing: { after: 100 }
+                            })] : []),
+                            ...(s.strengths ? [new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({ text: 'Stärken: ', bold: true }),
+                                    new docx.TextRun({ text: s.strengths })
+                                ],
+                                spacing: { after: 100 }
+                            })] : []),
+                            ...(s.license ? [new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({ text: 'Führerschein: ', bold: true }),
+                                    new docx.TextRun({ text: s.license })
+                                ],
+                                spacing: { after: 100 }
+                            })] : []),
+                            ...(s.hobbies ? [new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({ text: 'Hobbys & Interessen: ', bold: true }),
+                                    new docx.TextRun({ text: s.hobbies })
+                                ],
+                                spacing: { after: 200 }
+                            })] : [])
+                        ] : []),
+
+                        new docx.Paragraph({
+                            text: '',
+                            spacing: { before: 400 }
+                        }),
+                        new docx.Paragraph({
+                            text: `${p.address ? p.address.split(',').pop().trim() : 'Musterstadt'}, den ${new Date().toLocaleDateString('de-DE')}`,
+                            alignment: docx.Alignment.RIGHT
+                        })
+                    ]
+                }]
+            });
+
+            docx.Packer.toBlob(doc).then(blob => {
+                saveAs(blob, `Lebenslauf_${p.lastName || 'Schueler'}.docx`);
+            });
         }
 
         function loadExample() {
