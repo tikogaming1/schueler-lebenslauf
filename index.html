@@ -6,29 +6,6 @@
     <title>Lebenslauf Generator für Schüler</title>
     <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc, query, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDgfe2N8PBia_38agQOXBRXU6Cm2ZQGVi0",
-  authDomain: "lebenslauf-generator-166ca.firebaseapp.com",
-  databaseURL: "https://lebenslauf-generator-166ca-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "lebenslauf-generator-166ca",
-  storageBucket: "lebenslauf-generator-166ca.firebasestorage.app",
-  messagingSenderId: "567569420880",
-  appId: "1:567569420880:web:bb6bca99fbd18176b97755",
-  measurementId: "G-VZ7NLZZKQ0"
-};
-        
-        const app = initializeApp(firebaseConfig);
-        window.auth = getAuth(app);
-        window.db = getFirestore(app);
-        window.firebaseAuth = { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged };
-        window.firebaseFirestore = { collection, doc, setDoc, getDoc, getDocs, deleteDoc, query, where };
-    </script>
     <style>
         * {
             margin: 0;
@@ -41,6 +18,72 @@ const firebaseConfig = {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             min-height: 100vh;
             padding: 20px;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        body.dark-mode .input-panel,
+        body.dark-mode .preview-panel {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .panel-header {
+            background: linear-gradient(135deg, #0d5c57 0%, #1a5f4a 100%);
+        }
+
+        body.dark-mode .tab {
+            background: #4a5568;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .tab.active {
+            background: #11998e;
+        }
+
+        body.dark-mode input,
+        body.dark-mode textarea,
+        body.dark-mode select {
+            background: #4a5568;
+            color: #e2e8f0;
+            border-color: #4a5568;
+        }
+
+        body.dark-mode .entry-item {
+            background: #4a5568;
+        }
+
+        body.dark-mode .cv-container {
+            background: white;
+            color: #333;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: #4a5568;
+            color: #e2e8f0;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
         }
 
         .container {
@@ -376,76 +419,6 @@ const firebaseConfig = {
             font-style: italic;
         }
 
-        .auth-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .auth-modal.active {
-            display: flex;
-        }
-
-        .auth-box {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        }
-
-        .auth-box h2 {
-            margin-bottom: 20px;
-            color: #11998e;
-        }
-
-        .auth-toggle {
-            text-align: center;
-            margin-top: 15px;
-            color: #666;
-        }
-
-        .auth-toggle a {
-            color: #11998e;
-            cursor: pointer;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .saved-cvs {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .saved-cv-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: white;
-            margin-bottom: 8px;
-            border-radius: 5px;
-            border-left: 3px solid #11998e;
-        }
-
         @media print {
             body {
                 background: white;
@@ -477,20 +450,13 @@ const firebaseConfig = {
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Hell/Dunkel Modus wechseln">🌙</button>
     <div class="container">
         <div class="input-panel">
             <div class="panel-header">
                 <h1>🎓 Schüler Lebenslauf</h1>
                 <p>Für Ausbildung, Praktikum & FSJ</p>
             </div>
-
-            <!-- User Auth Section -->
-            <div id="userInfo" style="padding: 15px; border-bottom: 1px solid #dee2e6;">
-                <button class="btn btn-primary" onclick="openAuthModal()" style="width: 100%;">🔐 Anmelden / Registrieren</button>
-            </div>
-
-            <!-- Saved CVs Section -->
-            <div id="savedCVs" class="saved-cvs" style="display: none;"></div>
             
             <div class="tabs">
                 <button class="tab active" onclick="showTab('personal')">👤 Ich</button>
@@ -657,11 +623,10 @@ const firebaseConfig = {
             <div class="preview-header">
                 <h2 class="preview-title">📋 Dein Lebenslauf</h2>
                 <div class="preview-actions">
-                    <button class="btn btn-success" onclick="openSaveModal()">💾 Speichern</button>
-                    <button class="btn btn-success" onclick="exportToWord()">📄 Word</button>
-                    <button class="btn btn-success" onclick="window.print()">🖨️ Drucken</button>
-                    <button class="btn btn-secondary" onclick="loadExample()">📄 Beispiel</button>
-                    <button class="btn btn-danger" onclick="clearAll()">🗑️ Löschen</button>
+                    <button class="btn btn-success" onclick="exportToWord()">📄 Word speichern</button>
+                    <button class="btn btn-success" onclick="window.print()">🖨️ Drucken/PDF</button>
+                    <button class="btn btn-secondary" onclick="loadExample()">📄 Beispiel laden</button>
+                    <button class="btn btn-danger" onclick="clearAll()">🗑️ Alles löschen</button>
                 </div>
             </div>
             
@@ -682,6 +647,28 @@ const firebaseConfig = {
             engagement: [],
             skills: {}
         };
+
+        // Theme Toggle Function
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.querySelector('.theme-toggle');
+            
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                btn.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-mode');
+                btn.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme on page load
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.theme-toggle').textContent = '☀️';
+        }
 
         function showTab(tabName) {
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
@@ -707,6 +694,22 @@ const firebaseConfig = {
                 license: document.getElementById('skillLicense').value,
                 hobbies: document.getElementById('skillHobbies').value
             };
+            renderCV();
+        }
+
+        function clearAll() {
+            if (!confirm('Möchtest du wirklich alle Daten löschen?')) return;
+            cvData = {
+                personal: {},
+                school: [],
+                internship: [],
+                engagement: [],
+                skills: {}
+            };
+            document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+            renderSchoolList();
+            renderInternshipList();
+            renderEngagementList();
             renderCV();
         }
 
@@ -1273,226 +1276,6 @@ const firebaseConfig = {
             renderCV();
         }
 
-        // Auth Functions
-        let currentUser = null;
-        let isLoginMode = true;
-
-        function openAuthModal() {
-            document.getElementById('authModal').classList.add('active');
-        }
-
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.remove('active');
-        }
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            document.getElementById('authTitle').textContent = isLoginMode ? '🔐 Anmelden' : '📝 Registrieren';
-            document.getElementById('authBtn').textContent = isLoginMode ? 'Anmelden' : 'Registrieren';
-            document.getElementById('authToggleText').innerHTML = isLoginMode 
-                ? 'Noch kein Konto? <a onclick="toggleAuthMode()">Registrieren</a>'
-                : 'Bereits Konto? <a onclick="toggleAuthMode()">Anmelden</a>';
-        }
-
-        async function handleAuth() {
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-            
-            if (!email || !password || password.length < 6) {
-                alert('Bitte gültige E-Mail und Passwort (mindestens 6 Zeichen) eingeben!');
-                return;
-            }
-
-            try {
-                if (isLoginMode) {
-                    await window.firebaseAuth.signInWithEmailAndPassword(window.auth, email, password);
-                    alert('Erfolgreich angemeldet!');
-                } else {
-                    await window.firebaseAuth.createUserWithEmailAndPassword(window.auth, email, password);
-                    alert('Konto erfolgreich erstellt!');
-                }
-                closeAuthModal();
-                updateAuthUI();
-            } catch (error) {
-                alert('Fehler: ' + error.message);
-            }
-        }
-
-        async function logout() {
-            await window.firebaseAuth.signOut(window.auth);
-            currentUser = null;
-            updateAuthUI();
-            alert('Abgemeldet!');
-        }
-
-        function updateAuthUI() {
-            const userInfo = document.getElementById('userInfo');
-            const savedCVs = document.getElementById('savedCVs');
-            if (currentUser) {
-                userInfo.innerHTML = `
-                    <div class="user-info">
-                        <span>👤 ${currentUser.email}</span>
-                        <button class="btn btn-secondary" onclick="logout()">Abmelden</button>
-                    </div>
-                `;
-                savedCVs.style.display = 'block';
-                loadSavedCVs();
-            } else {
-                userInfo.innerHTML = `
-                    <button class="btn btn-primary" onclick="openAuthModal()" style="width: 100%;">🔐 Anmelden / Registrieren</button>
-                `;
-                savedCVs.style.display = 'none';
-                savedCVs.innerHTML = '';
-            }
-        }
-
-        function openSaveModal() {
-            if (!currentUser) {
-                alert('Bitte zuerst anmelden, um Lebensläufe zu speichern!');
-                openAuthModal();
-                return;
-            }
-            document.getElementById('saveModal').classList.add('active');
-        }
-
-        function closeSaveModal() {
-            document.getElementById('saveModal').classList.remove('active');
-        }
-
-        async function saveCVToCloud() {
-            const name = document.getElementById('cvName').value || 'Mein Lebenslauf';
-            
-            try {
-                const cvRef = window.firebaseFirestore.doc(window.db, 'users', currentUser.uid, 'cvs', Date.now().toString());
-                await window.firebaseFirestore.setDoc(cvRef, {
-                    name: name,
-                    data: cvData,
-                    createdAt: new Date().toISOString()
-                });
-                alert('Lebenslauf gespeichert!');
-                closeSaveModal();
-                loadSavedCVs();
-            } catch (error) {
-                alert('Fehler beim Speichern: ' + error.message);
-            }
-        }
-
-        async function loadSavedCVs() {
-            if (!currentUser) return;
-            
-            try {
-                const q = window.firebaseFirestore.query(
-                    window.firebaseFirestore.collection(window.db, 'users', currentUser.uid, 'cvs')
-                );
-                const snapshot = await window.firebaseFirestore.getDocs(q);
-                
-                let html = '<h3>📂 Gespeicherte Lebensläufe</h3>';
-                if (snapshot.empty) {
-                    html += '<p style="color: #666; font-size: 0.9rem;">Noch keine Lebensläufe gespeichert.</p>';
-                } else {
-                    snapshot.forEach(doc => {
-                        const cv = doc.data();
-                        html += `
-                            <div class="saved-cv-item">
-                                <span>${cv.name}</span>
-                                <div>
-                                    <button class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;" onclick="loadCVFromCloud('${doc.id}')">Laden</button>
-                                    <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteCVFromCloud('${doc.id}')">🗑️</button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-                document.getElementById('savedCVs').innerHTML = html;
-            } catch (error) {
-                console.error('Error loading CVs:', error);
-            }
-        }
-
-        async function loadCVFromCloud(cvId) {
-            try {
-                const docRef = window.firebaseFirestore.doc(window.db, 'users', currentUser.uid, 'cvs', cvId);
-                const docSnap = await window.firebaseFirestore.getDoc(docRef);
-                
-                if (docSnap.exists()) {
-                    cvData = docSnap.data().data;
-                    
-                    // Update UI
-                    document.getElementById('firstName').value = cvData.personal.firstName || '';
-                    document.getElementById('lastName').value = cvData.personal.lastName || '';
-                    document.getElementById('birthInfo').value = cvData.personal.birthInfo || '';
-                    document.getElementById('email').value = cvData.personal.email || '';
-                    document.getElementById('phone').value = cvData.personal.phone || '';
-                    document.getElementById('address').value = cvData.personal.address || '';
-                    document.getElementById('aboutMe').value = cvData.personal.aboutMe || '';
-                    document.getElementById('skillIT').value = cvData.skills.it || '';
-                    document.getElementById('skillLang').value = cvData.skills.languages || '';
-                    document.getElementById('skillStrength').value = cvData.skills.strengths || '';
-                    document.getElementById('skillLicense').value = cvData.skills.license || '';
-                    document.getElementById('skillHobbies').value = cvData.skills.hobbies || '';
-                    
-                    renderSchoolList();
-                    renderInternshipList();
-                    renderEngagementList();
-                    renderCV();
-                    alert('Lebenslauf geladen!');
-                }
-            } catch (error) {
-                alert('Fehler beim Laden: ' + error.message);
-            }
-        }
-
-        async function deleteCVFromCloud(cvId) {
-            if (!confirm('Möchtest du diesen Lebenslauf wirklich löschen?')) return;
-            
-            try {
-                await window.firebaseFirestore.deleteDoc(
-                    window.firebaseFirestore.doc(window.db, 'users', currentUser.uid, 'cvs', cvId)
-                );
-                loadSavedCVs();
-            } catch (error) {
-                alert('Fehler beim Löschen: ' + error.message);
-            }
-        }
-
-        // Listen for auth state changes
-        window.firebaseAuth.onAuthStateChanged(window.auth, (user) => {
-            currentUser = user;
-            updateAuthUI();
-        });
     </script>
-
-    <!-- Auth Modal -->
-    <div id="authModal" class="auth-modal">
-        <div class="auth-box">
-            <h2 id="authTitle">🔐 Anmelden</h2>
-            <div class="form-group">
-                <label>E-Mail</label>
-                <input type="email" id="authEmail" placeholder="deine@email.de">
-            </div>
-            <div class="form-group">
-                <label>Passwort</label>
-                <input type="password" id="authPassword" placeholder="Mindestens 6 Zeichen">
-            </div>
-            <button class="btn btn-primary" id="authBtn" onclick="handleAuth()" style="width: 100%;">Anmelden</button>
-            <div class="auth-toggle">
-                <span id="authToggleText">Noch kein Konto? <a onclick="toggleAuthMode()">Registrieren</a></span>
-            </div>
-            <button class="btn btn-secondary" onclick="closeAuthModal()" style="width: 100%; margin-top: 10px;">Schließen</button>
-        </div>
-    </div>
-
-    <!-- Save CV Modal -->
-    <div id="saveModal" class="auth-modal">
-        <div class="auth-box">
-            <h2>💾 Lebenslauf speichern</h2>
-            <div class="form-group">
-                <label>Name für diesen Lebenslauf</label>
-                <input type="text" id="cvName" placeholder="z.B. Bewerbung Ausbildung 2024">
-            </div>
-            <button class="btn btn-primary" onclick="saveCVToCloud()" style="width: 100%;">Speichern</button>
-            <button class="btn btn-secondary" onclick="closeSaveModal()" style="width: 100%; margin-top: 10px;">Abbrechen</button>
-        </div>
-    </div>
 </body>
 </html>
