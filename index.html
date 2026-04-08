@@ -61,42 +61,152 @@
             color: #333;
         }
 
-        .theme-toggle {
+        /* Modern Theme Toggle Switch */
+        .theme-toggle-container {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: 3px solid white;
-            border-radius: 50px;
-            width: 60px;
-            height: 60px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
             z-index: 100;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 80px;
+            height: 40px;
+            background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%);
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.1),
+                0 4px 15px rgba(135, 206, 235, 0.4);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 50px;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 2px 8px rgba(255, 215, 0, 0.5),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.2rem;
+            z-index: 2;
         }
 
+        .toggle-slider::before {
+            content: '☀️';
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+        }
+
+        /* Stars in dark mode background */
+        .theme-toggle::after {
+            content: '✦ ✦ ✦';
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 0.5rem;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        /* Clouds in light mode */
+        .toggle-clouds {
+            position: absolute;
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%);
+            font-size: 0.6rem;
+            color: white;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .toggle-clouds::before {
+            content: '☁ ☁';
+            letter-spacing: 2px;
+        }
+
+        /* Hover effects */
         .theme-toggle:hover {
-            transform: scale(1.15) rotate(15deg);
-            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.1),
+                0 6px 20px rgba(135, 206, 235, 0.5);
         }
 
-        .theme-toggle:active {
-            transform: scale(0.95);
+        .theme-toggle:hover .toggle-slider {
+            box-shadow: 
+                0 4px 12px rgba(255, 215, 0, 0.6),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
         }
 
+        /* DARK MODE STYLES */
         body.dark-mode .theme-toggle {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border-color: #2d3748;
-            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.3),
+                0 4px 15px rgba(26, 26, 46, 0.5);
+        }
+
+        body.dark-mode .theme-toggle::before {
+            opacity: 1;
+        }
+
+        body.dark-mode .toggle-slider {
+            transform: translateX(40px);
+            background: linear-gradient(135deg, #E8E8E8 0%, #C0C0C0 100%);
+            box-shadow: 
+                0 2px 8px rgba(255,255,255,0.3),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .toggle-slider::before {
+            content: '🌙';
+        }
+
+        body.dark-mode .theme-toggle::after {
+            opacity: 1;
+        }
+
+        body.dark-mode .toggle-clouds {
+            opacity: 0;
         }
 
         body.dark-mode .theme-toggle:hover {
-            box-shadow: 0 12px 35px rgba(240, 147, 251, 0.6);
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.3),
+                0 6px 20px rgba(26, 26, 46, 0.6);
+        }
+
+        body.dark-mode .theme-toggle:hover .toggle-slider {
+            box-shadow: 
+                0 4px 12px rgba(255,255,255,0.4),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
         }
 
         .container {
@@ -463,7 +573,12 @@
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Hell/Dunkel Modus wechseln">🌙</button>
+    <div class="theme-toggle-container">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Hell/Dunkel Modus wechseln">
+            <div class="toggle-clouds"></div>
+            <div class="toggle-slider"></div>
+        </button>
+    </div>
     <div class="container">
         <div class="input-panel">
             <div class="panel-header">
