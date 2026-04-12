@@ -178,15 +178,23 @@
         }
 
         body.dark-mode .toggle-slider {
-            transform: translateX(40px);
+            transform: translateX(42px);
             background: linear-gradient(135deg, #E8E8E8 0%, #C0C0C0 100%);
             box-shadow: 
-                0 2px 8px rgba(255,255,255,0.3),
+                0 2px 12px rgba(255,255,255,0.4),
                 inset 0 -2px 4px rgba(0,0,0,0.1);
         }
 
+        /* Explicit light mode icon - Sun */
+        .toggle-slider::before {
+            content: '☀️';
+            font-size: 1.4rem;
+        }
+
+        /* Dark mode icon - Moon */
         body.dark-mode .toggle-slider::before {
             content: '🌙';
+            font-size: 1.4rem;
         }
 
         body.dark-mode .theme-toggle::after {
