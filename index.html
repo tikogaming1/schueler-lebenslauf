@@ -788,11 +788,9 @@
             
             if (body.classList.contains('dark-mode')) {
                 body.classList.remove('dark-mode');
-                btn.textContent = '🌙';
                 localStorage.setItem('theme', 'light');
             } else {
                 body.classList.add('dark-mode');
-                btn.textContent = '☀️';
                 localStorage.setItem('theme', 'dark');
             }
         }
@@ -800,7 +798,6 @@
         // Load saved theme on page load
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-mode');
-            document.querySelector('.theme-toggle').textContent = '☀️';
         }
 
         function showTab(tabName) {
