@@ -5,7 +5,7 @@
 
 ### 🌟 **Erstelle deinen perfekten Lebenslauf in Minuten!** 🌟
 
-🔖 **Version 1.4** | 💚 **Made with Love** | 🌐 **HTML5** | 🎨 **CSS3**
+🔖 **Version 1.5** | 💚 **Made with Love** | 🌐 **HTML5** | 🎨 **CSS3**
 
 🎯 [Live Demo](https://tikogaming1.github.io/schueler-lebenslauf/) • 📄 [Repository](https://github.com/tikogaming1/schueler-lebenslauf) • ⭐ Star mich!
 
@@ -33,11 +33,14 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 
 | Feature | Beschreibung | Emoji |
 |---------|-------------|-------|
-| 👤 **Persönliche Daten** | Name, Adresse, Kontakt | 📧 📞 |
+| 👤 **Persönliche Daten** | Name, Adresse, Kontakt, **Profilfoto** | 📧 📞 📷 |
 | 🏫 **Schulbildung** | Von Grundschule bis Abitur | 🎓 📚 |
 | 💼 **Praktika** | Zeige deine Erfahrung | 💪 🏢 |
 | ⭐ **Engagement** | Hobbys, Vereine, Ehrenamt | 🎨 ⚽ |
 | 🎯 **Fähigkeiten** | Sprachen, Computer, Stärken | 💻 🌍 |
+| 🌙 **Dark Mode** | Hell/Dunkel Design wechseln | 🌗 |
+| 💾 **Auto-Save** | Daten werden automatisch gespeichert | 💾 |
+| ✅ **Validierung** | E-Mail & Pflichtfelder-Check | ✓ |
 
 ---
 
@@ -76,9 +79,13 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 
 - ✅ **Kostenlos** - Und für immer Verfühgbar! 🆓
 - ✅ **Ohne Anmeldung** - Kein Account nötig! 🔓
+- ✅ **Auto-Save** - Daten bleiben beim Neuladen erhalten! 💾
+- ✅ **Dark Mode** - Angenehmes Design bei Nacht! 🌙
+- ✅ **Profilfoto** - Füge dein Bild zum Lebenslauf hinzu! 📷
 - ✅ **Offline nutzbar** - Funktioniert ohne Internet! 📴
 - ✅ **Mobilfreundlich** - Auch auf dem Handy! 📱
 - ✅ **PDF Export** - Einfach drucken und speichern! 📄
+- ✅ **Barrierefrei** - Screenreader-freundlich! ♿
 
 ---
 
@@ -103,10 +110,12 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 ## 🛠️ **Technologie**
 
 ```
-🌐 HTML5      → Struktur
-🎨 CSS3       → Design (so schön!)
-⚡ JavaScript  → Magie (Funktionalität)
+🌐 HTML5       → Struktur
+🎨 CSS3        → Design (so schön!)
+⚡ JavaScript   → Magie (Funktionalität)
 🚀 GitHub Pages → Hosting (kostenlos!)
+💾 LocalStorage → Auto-Save (Daten bleiben!)
+🌙 CSS Variables → Dark/Light Mode
 ```
 
 ---
