@@ -31,7 +31,7 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 
 ## 🎯 **Features**
 
-| Feature | Beschreibung | Emoji |
+| Feature | Beschreibung | Emoji|
 |---------|-------------|-------|
 | 👤 **Persönliche Daten** | Name, Adresse, Kontakt, **Profilfoto** | 📧 📞 📷 |
 | 🏫 **Schulbildung** | Von Grundschule bis Abitur | 🎓 📚 |
