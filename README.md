@@ -137,7 +137,7 @@ Klicke auf **"📄 Beispiel laden"** in der App und sieh dir ein vollständiges 
 
 *Made with ❤️ für Schüler*
 
-⭐ Wenn dir das Tool gefällt, gib uns einen Star! ⭐
+⭐ Wenn dir das Tool gefällt, gib mir einen Star! ⭐
 
 🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈
 
