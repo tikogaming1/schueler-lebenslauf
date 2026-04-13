@@ -39,7 +39,7 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 | ⭐ **Engagement** | Hobbys, Vereine, Ehrenamt | 🎨 ⚽ |
 | 🎯 **Fähigkeiten** | Sprachen, Computer, Stärken | 💻 🌍 |
 | 🌙 **Dark Mode** | Hell/Dunkel Design wechseln | 🌗 |
-| 💾 **Auto-Save** | Daten werden automatisch gespeichert | 💾 |
+| 💾 **Auto-Save** | Daten werden automatisch Lokal nur auf deinem gerät gespeichert | 💾 |
 | ✅ **Validierung** | E-Mail & Pflichtfelder-Check | ✓ |
 
 ---
