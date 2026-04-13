@@ -1,6 +1,5 @@
 # 🎓✨ Schüler Lebenslauf Generator ✨🎓
-
-<div align="center">
+<div align="center"
 
 🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈✨🌈
 
