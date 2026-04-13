@@ -5,7 +5,7 @@
 
 ### 🌟 **Erstelle deinen perfekten Lebenslauf in Minuten!** 🌟
 
-🔖 **Version 1.3** | 💚 **Made with Love** | 🌐 **HTML5** | � **CSS3**
+🔖 **Version 1.3** | 💚 **Made with Love** | 🌐 **HTML5** | 🎨 **CSS3**
 
 🎯 [Live Demo](https://tikogaming1.github.io/schueler-lebenslauf/) • 📄 [Repository](https://github.com/tikogaming1/schueler-lebenslauf) • ⭐ Star mich!
 
