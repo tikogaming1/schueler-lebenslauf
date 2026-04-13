@@ -65,7 +65,7 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 
 ```
 ┌─────────────────────────────────────┐
-│  👤 DEINE DATEN EINGEBEN           │
+│  👤 DEINE DATEN EINGEBEN            │
 │     ↓                               │
 │  ✨ MAGIE PASSIERT...               │
 │     ↓                               │
