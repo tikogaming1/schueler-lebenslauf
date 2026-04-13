@@ -92,7 +92,7 @@ Dieses Tool hilft dir, einen **professionellen Lebenslauf** zu erstellen - ganz 
 ## 🎓 **Für wen ist das?**
 
 ```diff
-+ Schüler der 8.-13. Klasse
++ Schüler der 6.-13. Klasse
 + Abiturienten auf Jobsuche
 + Azubis im Bewerbungsprozess
 + FSJ/BFD Interessierte
